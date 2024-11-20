@@ -96,7 +96,7 @@ const PaymentDialog = ({
           {loading ? (
             <Loader2Icon className="animate-spin" />
           ) : (
-            <>Pay with Stripe</>
+            <>Pay with  Stripe</>
           )}
         </button>  */}
 
