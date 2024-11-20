@@ -14,7 +14,7 @@ const Footer = () => {
 
           <p className="text-slate-700 text-sm text-justify mb-6 px-4 md:px-0">
             Create professional, high-quality AI-generated headshots in minutes
-            with Framecast AI, our easy-to-use AI headshot generator. Perfect
+            with iCam Digital, our easy-to-use AI headshot generator. Perfect
             for businesses and individuals looking to elevate their profile with
             stunning, custom portraits.
           </p>
