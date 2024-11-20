@@ -88,7 +88,7 @@ const PaymentDialog = ({
         <DialogTitle>Choose Payment Method</DialogTitle>
       </DialogHeader>
       <div className="flex flex-col gap-3 mt-4">
-        <button
+        {/* <button
           onClick={onStripeClick}
           disabled={loading}
           className="flex items-center justify-center gap-2 w-full rounded-full p-3 bg-[#635BFF] hover:bg-[#635BFF]/90 text-white transition-all"
@@ -98,7 +98,7 @@ const PaymentDialog = ({
           ) : (
             <>Pay with Stripe</>
           )}
-        </button>
+        </button>  */}
 
         {paypalScriptLoaded && (
           <PayPalButton price={plan.price.toString()} userId={userId} />
