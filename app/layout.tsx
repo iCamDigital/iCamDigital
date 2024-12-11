@@ -5,9 +5,10 @@ import { Analytics } from "@vercel/analytics/react";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 export const metadata = {
-  title: "Framecast AI",
+  title: "ICam Digital",
   description: "Generate awesome headshots in minutes using AI",
 };
 
@@ -30,18 +31,20 @@ export default function RootLayout({ children }: any) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="flex flex-col min-h-screen">
-        <NextTopLoader color="#2564eb" height={5} showSpinner={false} />
-        <Suspense
-          fallback={
-            <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between h-[69px]" />
-          }
-        ></Suspense>
-        <main className="flex-grow items-center">
-          {children}
-          <SpeedInsights />
-        </main>
-        <Toaster />
-        <Analytics />
+        <LanguageProvider>
+          <NextTopLoader color="#2564eb" height={5} showSpinner={false} />
+          <Suspense
+            fallback={
+              <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between h-[69px]" />
+            }
+          ></Suspense>
+          <main className="flex-grow items-center">
+            {children}
+            <SpeedInsights />
+          </main>
+          <Toaster />
+          <Analytics />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -9,12 +9,16 @@ import { createClient } from "@supabase/supabase-js";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useTranslation } from "@/app/i18n/client";
+import { useLanguage } from "@/app/contexts/LanguageContext";
 
 export default function ClientSideModel({
   serverModel,
   serverImages,
   samples,
 }: ClientSideModelProps) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const [model, setModel] = useState<modelRow>(serverModel);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -44,7 +48,7 @@ export default function ClientSideModel({
         {/* Training Data Section */}
         <div className="w-full mb-10">
           <h2 className="text-3xl mb-4 font-medium tracking-wide">
-            Your Images
+            {t("yourImages")}
           </h2>
           <div className="flex items-center gap-2">
             {samples.slice(0, 3).map((sample, index) => (
@@ -96,7 +100,7 @@ export default function ClientSideModel({
         {/* Results Section */}
         {model.status === "finished" && (
           <div className="w-full">
-            <h2 className="text-3xl font-medium tracking-wide mb-4">Results</h2>
+            <h2 className="text-3xl font-medium tracking-wide mb-4">{t("results")}</h2>
             <div className="grid justify-center sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
               {serverImages?.map((image) => (
                 <div key={image.id} className="relative group w-fit">
@@ -113,7 +117,7 @@ export default function ClientSideModel({
                           size="sm"
                           onClick={() => setPreviewImage(image.uri)}
                         >
-                          Preview
+                          {t("preview")}
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[425px]">
@@ -134,7 +138,7 @@ export default function ClientSideModel({
                         )
                       }
                     >
-                      Download
+                      {t("download")}
                     </Button>
                   </div>
                 </div>

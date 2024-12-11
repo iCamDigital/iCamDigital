@@ -1,4 +1,6 @@
 "use client";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useTranslation } from "@/app/i18n/client";
 import PacksGalleryZone from "@/components/PacksGalleryZone";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
@@ -11,6 +13,8 @@ export default async function Index() {
     redirect("/overview");
   }
   const router = useRouter();
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
 
   return (
     <div className="w-full mx-auto relative">
@@ -20,15 +24,15 @@ export default async function Index() {
         onClick={() => router.push("/overview")}
         className="absolute left-5 top-5"
       >
-        ← Back
+        ← {t("back")}
       </Button>
 
       <div className="flex flex-col items-center justify-center p-5 space-y-2">
         <h1 className="text-5xl font-extrabold uppercase tracking-wide">
-          Styles Gallery
+          {t("stylesGallery")}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Choose the type of images you would like to create.
+          {t("chooseTheTypeOfImagesYouWouldLikeToCreate.")}
         </p>
       </div>
 

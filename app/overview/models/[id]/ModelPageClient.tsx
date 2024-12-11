@@ -2,13 +2,17 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Add this
+import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import ClientSideModel from "@/app/overview/components/realtime/ClientSideModel";
 import { CheckIcon } from "lucide-react";
-import { useRouter } from "next/navigation"; // Add this
+import { useRouter } from "next/navigation";
+import { useTranslation } from "@/app/i18n/client";
+import { useLanguage } from "@/app/contexts/LanguageContext";
 
 export default function ModelPageClient({ model, images, samples }) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const router = useRouter();
 
   return (
@@ -19,7 +23,7 @@ export default function ModelPageClient({ model, images, samples }) {
         onClick={() => router.back()}
         className="absolute left-5 top-5"
       >
-        ← Back
+        ← {t("back")}
       </Button>
 
       <div className="flex flex-row justify-center items-center gap-2 pb-4">

@@ -6,6 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/app/i18n";
+import { useLanguage } from "@/app/contexts/LanguageContext";
 
 export const revalidate = 0;
 
@@ -51,10 +53,21 @@ export default function ClientSideCredits({
 
   if (!credits) return null;
 
+  const { language } = useLanguage();
+  const [t, setT] = useState<(key: string) => string>(
+    () => (key: string) => key
+  );
+
+  useEffect(() => {
+    useTranslation(language).then(({ t }) => {
+      setT(() => t);
+    });
+  }, [language]);
+
   return (
     <div className="w-full max-w-sm">
       <div className="bg-primary p-4 rounded-lg text-primary-foreground">
-        <h2 className="font-medium text-base">Usage</h2>
+        <h2 className="font-medium text-base">{t("usage")}</h2>
         <div className="h-2 bg-primary-foreground/20 w-full rounded-full mt-3 overflow-hidden">
           <div
             className="h-2 bg-primary-foreground rounded-full transition-all duration-700"
@@ -64,7 +77,7 @@ export default function ClientSideCredits({
           ></div>
         </div>
         <p className="text-sm font-normal mt-2">
-          Credits: {credits.credits} remaining
+          {t("credits")} {credits.credits} {t("remaining")}
         </p>
       </div>
       <Button
@@ -72,7 +85,7 @@ export default function ClientSideCredits({
         className="w-full mt-3"
         onClick={() => router.push("/overview/credits")}
       >
-        Get More Credits
+        {t("getMoreCredits")}
       </Button>
     </div>
   );

@@ -1,97 +1,120 @@
+"use client";
 import React from "react";
 import Head from "next/head";
-import Navbar from "../../components/Header";
+import { useTranslation } from "@/app/i18n/client";
+import { useLanguage } from "@/app/contexts/LanguageContext";
 
 const Refund: React.FC = () => {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   return (
     <div className="flex-grow pb-6">
       <Head>
-        <title>Refund Policy | Framecast AI</title>
+        <title>{t("Refund Policy | Framecast AI")}</title>
         <meta
           name="description"
           content="Refund policy for the AI headshot generator service by Framecast AI."
         />
       </Head>
-      <Navbar />
       <main className="max-w-[80rem] mt-14 px-4 sm:px-6 lg:px-8 mx-auto">
         <h1 className="text-main text-6xl font-bold mx-auto mb-10 text-blue-600 tracking-wide lg:mb-14">
-          Refund Policy
+          {t("refundPolicy")}
         </h1>
         <p className="mb-4 text-justify">
-          Thank you for choosing our{" "}
+          {t("ThankYouForChoosingOur")}{" "}
           <a href="https://framecast-ai.vercel.app" className="text-blue-600">
             {" "}
-            AI headshot generator{" "}
+            {t("AiHeadshotGenerator")}{" "}
           </a>{" "}
-          service. We strive to provide the best experience for our users.
-          Please review our refund policy below to understand the circumstances
-          under which refunds may be issued.
+          {t(
+            "ServiceWeStriveToProvideTheBestExperienceForOurUsersPleaseReviewOurRefundPolicyBelowToUnderstandTheCircumstancesUnderWhichRefundsMayBeIssued"
+          )}
         </p>
 
         <section className="mb-6 text-justify">
-          <h2 className="text-xl font-semibold mb-2">1. Refund Scenarios</h2>
+          <h2 className="text-xl font-semibold mb-2">
+            {t("1RefundScenarios")}
+          </h2>
           <ul className="list-disc list-inside pl-5">
             <li>
-              <strong>Technical Issues or Errors:</strong> If you encounter
-              technical problems that prevent you from receiving our
-              service—such as the AI failing to generate headshots or producing
-              unusable results—you may be eligible for a refund.
+              <strong>{t("TechnicalIssuesOrErrors")}</strong>:{" "}
+              {t(
+                "IfYouEncounterTechnicalProblemsThatPreventYouFromReceivingOurServiceSuchAsTheAiFailingToGenerateHeadshotsOrProducingUnusableResultsYouMayBeEligibleForARefund"
+              )}
+              .
             </li>
             <li>
-              <strong>Service Not Delivered:</strong> If you have paid for
-              headshots but did not receive them, you are entitled to a refund.
+              <strong>{t("ServiceNotDelivered")}</strong>:{" "}
+              {t(
+                "IfYouHavePaidForHeadshotsButDidNotReceiveThemYouAreEntitledToARefund"
+              )}
+              .
             </li>
             <li>
-              <strong>Duplicate Charges:</strong> If you are accidentally
-              charged more than once for the same service, we will issue a
-              refund for the duplicate charge.
+              <strong>{t("DuplicateCharges")}</strong>:{" "}
+              {t(
+                "IfYouAreAccidentallyChargedMoreThanOnceForTheSameServiceWeWillIssueARefundForTheDuplicateCharge"
+              )}
+              .
             </li>
             <li>
-              <strong>Unsatisfactory Results:</strong> Refunds for
-              dissatisfaction with the quality of headshots are handled on a
-              case-by-case basis. As the output is subjective, please contact us
-              to discuss your concerns.
-            </li>
-          </ul>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">2. Refund Timeframe</h2>
-          <ul className="list-disc list-inside pl-5">
-            <li>
-              <strong>Request Period:</strong> You may request a refund within 7
-              days of your purchase.
-            </li>
-            <li>
-              <strong>Processing Time:</strong> Once a refund is approved, it
-              will be processed within 3 to 7 business days. Please allow
-              additional time for the refund to reflect in your account.
+              <strong>{t("UnsatisfactoryResults")}</strong>:{" "}
+              {t(
+                "RefundsForDissatisfactionWithTheQualityOfHeadshotsAreHandledOnACaseByCaseBasisAsTheOutputIsSubjectivePleaseContactUsToDiscussYourConcerns"
+              )}
+              .
             </li>
           </ul>
         </section>
 
         <section className="mb-6">
           <h2 className="text-xl font-semibold mb-2">
-            3. Conditions for Refunds
+            {t("2RefundTimeframe")}
           </h2>
           <ul className="list-disc list-inside pl-5">
             <li>
-              <strong>Original Payment Method:</strong> Refunds will be issued
-              to the original payment method used for the purchase.
+              <strong>{t("RequestPeriod")}</strong>:{" "}
+              {t("YouMayRequestARefundWithin7DaysOfYourPurchase")}.
             </li>
             <li>
-              <strong>Partial Refunds:</strong> Partial refunds may be offered
-              if part of the service has been delivered or used.
+              <strong>{t("ProcessingTime")}</strong>:{" "}
+              {t(
+                "OnceARefundIsApprovedItWillBeProcessedWithin3To7BusinessDaysPleaseAllowAdditionalTimeForTheRefundToReflectInYourAccount"
+              )}
+              .
+            </li>
+          </ul>
+        </section>
+
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-2">
+            {t("3ConditionsForRefunds")}
+          </h2>
+          <ul className="list-disc list-inside pl-5">
+            <li>
+              <strong>{t("OriginalPaymentMethod")}</strong>:{" "}
+              {t(
+                "RefundsWillBeIssuedToTheOriginalPaymentMethodUsedForThePurchase"
+              )}
+              .
             </li>
             <li>
-              <strong>Non-Refundable Situations:</strong>
+              <strong>{t("PartialRefunds")}</strong>:{" "}
+              {t(
+                "PartialRefundsMayBeOfferedIfPartOfTheServiceHasBeenDeliveredOrUsed"
+              )}
+              .
+            </li>
+            <li>
+              <strong>{t("NonRefundableSituations")}</strong>:{" "}
               <ul className="list-disc list-inside pl-5 mt-2">
-                <li>Changes of mind after the service has been delivered.</li>
-                <li>Refund requests made outside the 7-day request period.</li>
+                <li>{t("ChangesOfMindAfterTheServiceHasBeenDelivered")}.</li>
+                <li>{t("RefundRequestsMadeOutsideThe7DayRequestPeriod")}.</li>
                 <li>
-                  Issues beyond our control, such as dissatisfaction due to
-                  unrealistic expectations or failure to follow guidelines for
-                  uploading photos.
+                  {t(
+                    "IssuesBeyondOurControlSuchAsDissatisfactionDueToUnrealisticExpectationsOrFailureToFollowGuidelinesForUploadingPhotos"
+                  )}
+                  .
                 </li>
               </ul>
             </li>
@@ -100,54 +123,60 @@ const Refund: React.FC = () => {
 
         <section className="mb-6">
           <h2 className="text-xl font-semibold mb-2">
-            4. Handling Abusive Refund Requests
+            {t("4HandlingAbusiveRefundRequests")}
           </h2>
           <ul className="list-disc list-inside pl-5">
             <li>
-              <strong>Fraud Prevention:</strong> To prevent misuse of our refund
-              policy, we may limit the number of refund requests per user.
+              <strong>{t("FraudPrevention")}</strong>:{" "}
+              {t(
+                "ToPreventMisuseOfOurRefundPolicyWeMayLimitTheNumberOfRefundRequestsPerUser"
+              )}
+              .
             </li>
             <li>
-              <strong>Case-by-Case Basis:</strong> Subjective dissatisfaction
-              will be evaluated individually to determine if a refund is
-              justified.
+              <strong>{t("CaseByCaseBasis")}</strong>:{" "}
+              {t(
+                "SubjectiveDissatisfactionWillBeEvaluatedIndividuallyToDetermineIfARefundIsJustified"
+              )}
+              .
             </li>
           </ul>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold mb-2">
-            5. Alternative Solutions
+            {t("5AlternativeSolutions")}
           </h2>
           <ul className="list-disc list-inside pl-5">
             <li>
-              <strong>Free Redos:</strong> If you are unhappy with the initial
-              headshots, we offer free redos to ensure you receive a result you
-              are satisfied with.
+              <strong>{t("FreeRedos")}</strong>:{" "}
+              {t(
+                "IfYouAreUnhappyWithTheInitialHeadshotsWeOfferFreeRedosToEnsureYouReceiveAResultYouAreSatisfiedWith"
+              )}
+              .
             </li>
             <li>
-              <strong>Discounts or Credits:</strong> As an alternative to a full
-              refund, we may offer a discount or credit towards future services
-              if you have used part of the service.
+              <strong>{t("DiscountsOrCredits")}</strong>:{" "}
+              {t(
+                "AsAnAlternativeToAFullRefundWeMayOfferADiscountOrCreditTowardsFutureServicesIfYouHaveUsedPartOfTheService"
+              )}
+              .
             </li>
           </ul>
         </section>
 
         <section className="mt-8">
           <p>
-            If you have any questions or need to request a refund, please{" "}
-            <a
-              href="https://www.Framecast AI.com/contact-us"
-              className="text-blue-600"
-            >
+            {t("IfYouHaveAnyQuestionsOrNeedToRequestARefundPlease")}{" "}
+            <a href="" className="text-blue-600">
               {" "}
-              contact
+              {t("contact")}{" "}
             </a>{" "}
-            our support team at{" "}
+            {t("OurSupportTeamAt")}{" "}
             <a href="" className="text-blue-500 hover:underline">
               support@framecastai.com
             </a>
-            . We are here to assist you!
+            . {t("WeAreHereToAssistYou")}
           </p>
         </section>
       </main>

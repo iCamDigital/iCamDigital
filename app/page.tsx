@@ -1,6 +1,6 @@
 import FirstSection from "./components/Hero";
 import Carousel from "../components/ui/carousel";
-import SecondSection from "./components/page";
+import SecondSection from "./components/SecondSection";
 import ThirdSection from "./components/ThirdSection";
 import FourthSection from "./components/FourthSection";
 import PricingSection from "./components/Pricing";

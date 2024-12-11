@@ -1,29 +1,37 @@
+"use client";
+
+import { useLanguage } from "../contexts/LanguageContext";
+import { useTranslation } from "../i18n/client";
+
 const Footer = () => {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+
   return (
     <footer className="bg-white text-slate-700 border-t-[1px] py-10 mt-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Logo and Description */}
         <div className="flex flex-col items-center md:items-start">
-          <div className="footer-logo flex items-center justify-center my-[-60px] ml-[-5px] ">
+          <div className="footer-logo flex items-center justify-center my-[-20px] ml-[-5px] ">
             <img
-              src="/images/logo/logo-1.svg"
+              src="/images/logo/logo.png"
               alt="Framecast AI Logo"
-              className="h-52 w-52"
+              className="h-32 w-32"
             />
           </div>
 
           <p className="text-slate-700 text-sm text-justify mb-6 px-4 md:px-0">
-            Create professional, high-quality AI-generated headshots in minutes
-            with Framecast AI, our easy-to-use AI headshot generator. Perfect
-            for businesses and individuals looking to elevate their profile with
-            stunning, custom portraits.
+            {t("CreateProfessional,High-qualityAi-GeneratedHeadshotsInMinutes")}
+            {t("withFramecastAi,OurEasy-to-useAiHeadshotGenerator.Perfect")}
+            {t("ForBusinessesAndIndividualsLookingToElevateTheirProfileWith")}
+            {t("stunning,CustomPortraits.")}
           </p>
         </div>
 
         {/* Links */}
         <div>
           <h3 className="text-slate-900 font-semibold tracking-wider mb-4">
-            PAGES
+            {t("pages")}
           </h3>
           <ul className="space-y-2">
             <li>
@@ -31,7 +39,7 @@ const Footer = () => {
                 href="/others/about"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                About Us
+                {t("AboutUs")}
               </a>
             </li>
             <li>
@@ -39,15 +47,15 @@ const Footer = () => {
                 href="/#pricing"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Pricing
+                {t("pricing")}
               </a>
             </li>
             <li>
               <a
-                href="/others/blog"
+                href="/overview/blog"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Blog
+                {t("blog")}
               </a>
             </li>
             <li>
@@ -55,7 +63,7 @@ const Footer = () => {
                 href="/others/contact-us"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Contact Us
+                {t("contactUs")}
               </a>
             </li>
           </ul>
@@ -64,7 +72,7 @@ const Footer = () => {
         {/* Legal Links */}
         <div>
           <h3 className="text-slate-900 font-semibold tracking-wider mb-4">
-            LEGAL
+            {t("legal")}
           </h3>
           <ul className="space-y-2">
             <li>
@@ -72,7 +80,7 @@ const Footer = () => {
                 href="/#faqs"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                FAQs
+                {t("faqs")}
               </a>
             </li>
             <li>
@@ -80,7 +88,7 @@ const Footer = () => {
                 href="/others/terms"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Terms
+                {t("terms")}
               </a>
             </li>
             <li>
@@ -88,7 +96,7 @@ const Footer = () => {
                 href="/others/refund"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Refunds
+                {t("refunds")}
               </a>
             </li>
             <li>
@@ -96,7 +104,7 @@ const Footer = () => {
                 href="/others/privacy-policy"
                 className="hover:text-slate-900 hover:underline transition"
               >
-                Privacy Policy
+                {t("privacyPolicy")}
               </a>
             </li>
           </ul>
@@ -105,7 +113,7 @@ const Footer = () => {
         {/* Social Links */}
         <div>
           <h3 className="text-slate-900 font-semibold tracking-wider mb-4">
-            FOLLOW US
+            {t("followUs")}
           </h3>
           <div className="flex space-x-4 justify-start md:justify-start">
             <a
@@ -159,7 +167,7 @@ const Footer = () => {
         style={{ width: "50%" }}
       >
         <p className="text-slate-700 text-xs sm:text-base">
-          © {new Date().getFullYear()} Framecast AI Inc. All rights reserved.
+          © {new Date().getFullYear()} {t("ICamDigitalInc.AllRightsReserved.")}
         </p>
       </div>
     </footer>

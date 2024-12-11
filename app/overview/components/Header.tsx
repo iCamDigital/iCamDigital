@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useTranslation } from "@/app/i18n/client";
 
 interface HeaderProps {
   isOpen: boolean;
@@ -37,6 +39,8 @@ export function HeaderWrapper({
 }
 
 function Header({ isOpen, toggleSidebar, user }: HeaderProps) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const currentDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -44,14 +48,32 @@ function Header({ isOpen, toggleSidebar, user }: HeaderProps) {
     day: "numeric",
   });
 
-  // Get user's name from metadata, email, or provide a fallback
+  // Enhanced getUserName function to better handle different providers
   const getUserName = () => {
+    // First try to get the display name from provider metadata
     if (user.user_metadata?.full_name) {
       return user.user_metadata.full_name.split(" ")[0];
     }
-    if (user.email) {
-      return user.email.split("@")[0];
+
+    // Then try first name for email provider
+    if (user.user_metadata?.first_name) {
+      return user.user_metadata.first_name;
     }
+
+    // Fall back to email but clean it up
+    if (user.email) {
+      const emailName = user.email.split("@")[0];
+      // Convert email username to proper case and split by common delimiters
+      return emailName
+        .split(/[._-]/)
+        .map(
+          (part: string) =>
+            part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+        )
+        .join(" ")
+        .split(" ")[0];
+    }
+
     return "User";
   };
 
@@ -76,7 +98,7 @@ function Header({ isOpen, toggleSidebar, user }: HeaderProps) {
                 />
               </button>
               <h1 className="text-xl lg:text-2xl font-bold">
-                Hey, {userName}!
+                {t("hey,")} {userName}!
               </h1>
             </div>
             <UserDropdown user={user} />
@@ -95,14 +117,14 @@ function Header({ isOpen, toggleSidebar, user }: HeaderProps) {
                 }`}
               />
             </button>
-            <h1 className="text-xl lg:text-2xl font-bold">Hey, {userName}!</h1>
+            <h1 className="text-xl lg:text-2xl font-bold">{t("hey,")} {userName}!</h1>
           </div>
           <p className="text-sm lg:text-base text-gray-500">{currentDate}</p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 items-start sm:items-center w-full sm:w-auto">
           <h2 className="bg-primary p-1 rounded-full text-xs lg:text-sm text-white px-2 whitespace-normal sm:whitespace-nowrap text-center w-full sm:w-auto">
-            🔔 Get your first credit just for $12
+            🔔 {t("getYourFirstCreditJustFor$12")}
           </h2>
           {/* Show on tablet, hide on mobile and large desktop */}
           <div className="hidden sm:block lg:hidden">
@@ -118,8 +140,38 @@ function Header({ isOpen, toggleSidebar, user }: HeaderProps) {
   );
 }
 
-// Supabase User Dropdown Component
+// Enhanced UserDropdown component
 function UserDropdown({ user }: { user: any }) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+  const getFullName = () => {
+    // First try to get the full name from provider metadata
+    if (user.user_metadata?.full_name) {
+      return user.user_metadata.full_name;
+    }
+
+    // Then try combining first and last name
+    const firstName = user.user_metadata?.first_name || "";
+    const lastName = user.user_metadata?.last_name || "";
+    if (firstName || lastName) {
+      return `${firstName} ${lastName}`.trim();
+    }
+
+    // Fall back to email but clean it up
+    if (user.email) {
+      const emailName = user.email.split("@")[0];
+      return emailName
+        .split(/[._-]/)
+        .map(
+          (part: string) =>
+            part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+        )
+        .join(" ");
+    }
+
+    return "User";
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -130,11 +182,11 @@ function UserDropdown({ user }: { user: any }) {
           <Avatar className="h-9 w-9 bg-blue-100">
             <AvatarImage
               src={user.user_metadata?.avatar_url}
-              alt={user.email || ""}
+              alt={getFullName()}
               className="bg-blue-100"
             />
             <AvatarFallback className="bg-blue-100">
-              {user.email?.charAt(0).toUpperCase() || "U"}
+              {getFullName().charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -143,10 +195,10 @@ function UserDropdown({ user }: { user: any }) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none text-blue-600">
-              {user.email}
+              {getFullName()}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user.user_metadata?.full_name || user.email?.split("@")[0]}
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -159,7 +211,7 @@ function UserDropdown({ user }: { user: any }) {
               className="w-full justify-start"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <span>{t("logOut")}</span>
             </Button>
           </DropdownMenuItem>
         </form>

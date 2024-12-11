@@ -5,14 +5,16 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/types/supabase";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import disposableDomains from "disposable-email-domains";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { WaitingForMagicLink } from "./WaitingForMagicLink";
-import { Zap } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRouter } from "next/navigation";
+import { Zap, Eye, EyeOff } from "lucide-react";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useTranslation } from "@/app/i18n/client";
 
 type Inputs = {
   email: string;
+  password: string;
 };
 
 export const Login = ({
@@ -22,13 +24,16 @@ export const Login = ({
   host: string | null;
   searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+  const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isLinkedinLoading, setIsLinkedinLoading] = useState(false);
   const [isFacebookLoading, setIsFacebookLoading] = useState(false);
-  const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
   const [isPatternLoaded, setIsPatternLoaded] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
 
   const {
@@ -40,43 +45,41 @@ export const Login = ({
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsSubmitting(true);
     try {
-      await signInWithMagicLink(data.email);
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Success",
+        description:
+          "You have been successfully logged in. Redirecting you to dashboard.",
+        duration: 3000,
+      });
+
+      // Add delay then redirect
       setTimeout(() => {
-        setIsSubmitting(false);
-        toast({
-          title: "Email sent",
-          description: "Check your inbox for a magic link to sign in.",
-          duration: 5000,
-        });
-        setIsMagicLinkSent(true);
+        router.push("/overview");
+        router.refresh();
       }, 1000);
     } catch (error) {
-      setIsSubmitting(false);
       toast({
-        title: "Something went wrong",
+        title: "Authentication failed",
+        description: "Invalid email or password.",
         variant: "destructive",
-        description:
-          "Please try again, if the problem persists, contact us at hello@tryleap.ai",
         duration: 5000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const protocol = host?.includes("localhost") ? "http" : "https";
   const redirectUrl = `${protocol}://${host}/auth/callback`;
-
-  const signInWithMagicLink = async (email: string) => {
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: redirectUrl,
-      },
-    });
-
-    if (error) {
-      console.log(`Error: ${error.message}`);
-    }
-  };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -181,32 +184,22 @@ export const Login = ({
     }
   };
 
-  if (isMagicLinkSent) {
-    return (
-      <WaitingForMagicLink toggleState={() => setIsMagicLinkSent(false)} />
-    );
-  }
-
   return (
     <div className="flex min-h-screen">
-      {/* Left side - Wallpaper */}
       <div className="hidden lg:block lg:w-1/2 relative">
-        {/* Skeleton loader with gradient shimmer */}
         {!isPatternLoaded && (
           <div className="absolute inset-0">
             <Skeleton className="w-full h-full" />
           </div>
         )}
 
-        {/* Pattern image */}
         <div
           className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500
-    ${isPatternLoaded ? "opacity-100" : "opacity-0"}`}
+          ${isPatternLoaded ? "opacity-100" : "opacity-0"}`}
           style={{
             backgroundImage: "url('/pattern.svg')",
           }}
         >
-          {/* Preload image */}
           <img
             src="/pattern.svg"
             alt=""
@@ -216,9 +209,7 @@ export const Login = ({
         </div>
       </div>
 
-      {/* Right side - Login Form */}
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center bg-white dark:bg-neutral-900 p-4">
-        {/* Logo */}
         <div className="mb-4">
           <a href="./">
             <img
@@ -229,24 +220,21 @@ export const Login = ({
           </a>
         </div>
 
-        {/* Login Form Container */}
         <div className="w-full max-w-sm">
           <div className="flex flex-col gap-4 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm p-6 rounded-xl">
             <div className="text-center">
               <p className="text-sm text-gray-600 dark:text-neutral-400">
-                Don't have an account yet?{" "}
+                {t("don'tHaveAnAccountYet?")}{" "}
                 <a
-                  href="#"
+                  href="/signup"
                   className="text-blue-600 decoration-2 hover:underline focus:outline-none font-medium dark:text-blue-500"
                 >
-                  Sign up below!
+                  {t("signUpHere")}
                 </a>
               </p>
             </div>
 
-            {/* Social Sign-In Buttons Container */}
             <div className="flex justify-center gap-4">
-              {/* Existing buttons but with updated styles */}
               <Button
                 type="button"
                 variant="outline"
@@ -259,7 +247,6 @@ export const Login = ({
                   <div className="w-5 h-5 border-t-2 border-b-2 border-current rounded-full animate-spin" />
                 ) : (
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    {/* Existing Google SVG */}
                     <path
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                       fill="#4285F4"
@@ -280,13 +267,12 @@ export const Login = ({
                 )}
               </Button>
 
-              {/* LinkedIn Sign-In Button */}
               <Button
                 type="button"
                 variant="outline"
                 className="p-3 px-10 inline-flex justify-center items-center text-sm font-medium 
-        rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-50 hover:text-gray-900
-        dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-50 hover:text-gray-900
+                dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
                 onClick={handleLinkedinSignIn}
                 disabled={isLinkedinLoading}
               >
@@ -306,13 +292,12 @@ export const Login = ({
                 )}
               </Button>
 
-              {/* Facebook Sign-In Button */}
               <Button
                 type="button"
                 variant="outline"
                 className="p-3 px-10 inline-flex justify-center items-center text-sm font-medium 
-        rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-50 hover:text-gray-900
-        dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
+                rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-50 hover:text-gray-900
+                dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700"
                 onClick={handleFacebookSignIn}
                 disabled={isFacebookLoading}
               >
@@ -337,10 +322,11 @@ export const Login = ({
               <div className="border-t border-gray-200 dark:border-neutral-700 w-full"></div>
               <div className="absolute bg-white dark:bg-neutral-800 px-4">
                 <span className="text-sm text-gray-500 dark:text-neutral-400">
-                  Or
+                  {t("or")}
                 </span>
               </div>
             </div>
+
             <div className="mt-2">
               <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -351,37 +337,75 @@ export const Login = ({
                     htmlFor="email"
                     className="block text-sm mb-2 dark:text-white"
                   >
-                    Email address
+                    {t("email")}
                   </label>
                   <div className="relative">
                     <Input
                       type="email"
-                      placeholder="Email"
+                      placeholder={t("enterYourEmail")}
                       className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       {...register("email", {
-                        required: true,
-                        validate: {
-                          emailIsValid: (value: string) =>
-                            /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                              value
-                            ) || "Please enter a valid email",
-                          emailDoesntHavePlus: (value: string) =>
-                            /^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                              value
-                            ) || "Email addresses with a '+' are not allowed",
-                          emailIsntDisposable: (value: string) =>
-                            !disposableDomains.includes(value.split("@")[1]) ||
-                            "Please use a permanent email address",
+                        required: "Email is required",
+                        pattern: {
+                          value: /\S+@\S+\.\S+/,
+                          message: "Invalid email address",
                         },
                       })}
                     />
                     {isSubmitted && errors.email && (
                       <span className="text-xs text-red-400">
-                        {errors.email?.message ||
-                          "Email is required to sign in"}
+                        {errors.email.message}
                       </span>
                     )}
                   </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm mb-2 dark:text-white"
+                  >
+                    {t("password")}
+                  </label>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder={t("enterYourPassword")}
+                      className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 6,
+                          message: "Password must be at least 6 characters",
+                        },
+                      })}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                    {isSubmitted && errors.password && (
+                      <span className="text-xs text-red-400">
+                        {errors.password.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <a
+                    href="/login/forget-password"
+                    className="text-sm text-blue-600 hover:underline dark:text-blue-500"
+                  >
+                    {t("forgotPassword?")}
+                  </a>
                 </div>
 
                 <Button
@@ -389,41 +413,20 @@ export const Login = ({
                   disabled={isSubmitting}
                   variant="outline"
                   className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium 
-                rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 hover:text-white 
-                focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                  rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 hover:text-white 
+                  focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                   type="submit"
                 >
-                  Continue with email
+                  {t("signIn")}
                 </Button>
               </form>
-
-              <div className="flex items-center justify-center text-center p-2 mt-4">
-                <p className="text-xs justify-center text-center text-gray-600 dark:text-neutral-400">
-                  By signing up, you agree to our{" "}
-                  <a
-                    href="https://framecast-ai.vercel.app/terms"
-                    className="underline text-blue-600 dark:text-blue-500"
-                  >
-                    Terms
-                  </a>{" "}
-                  and{" "}
-                  <a
-                    href="https://framecast-ai.vercel.app/privacy-policy"
-                    className="underline text-blue-600 dark:text-blue-500"
-                  >
-                    Privacy
-                  </a>
-                  .
-                </p>
-              </div>
             </div>
           </div>
 
-          {/* Magic Link Info Container */}
           <div className="mt-4 bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm p-4 rounded-xl max-w-sm w-full flex items-center">
             <Zap className="w-6 h-6 text-black mr-3" />
             <p className="text-sm text-gray-600 dark:text-neutral-400">
-              We'll send you an email with a link to sign in without a password.
+              {t("fast&Secure,MadeForUsersToLoveAndAdore.")}
             </p>
           </div>
         </div>

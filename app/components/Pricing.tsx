@@ -1,6 +1,12 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useTranslation } from "../i18n/client";
 
 const Pricing = () => {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+
   return (
     <div
       id="pricing"
@@ -11,14 +17,14 @@ const Pricing = () => {
          from-blue-600 to-blue-200
         max-w-4xl bg-clip-text text-transparent"
       >
-        Premium quality without the premium price.
+        {t("premiumQualityWithoutThePremiumPrice.")}
       </h2>
       <p
         className="px-4 text-center text-xl sm:text-2xl font-medium text-slate-700 mt-4 max-w-4xl 
       tracking-wider"
       >
-        Update your LinkedIn profile picture, boost your job application rate,
-        or upgrade your company's website with our tailored AI headshot plans.
+        {t("updateYourLinkedInProfilePictureBoostYourJobApplicationRate")}
+        {t("orUpgradeYourCompanysWebsiteWithOurTailoredAiHeadshotPlans.")}
       </p>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-4 lg:gap-6 mt-16 mb-12">
@@ -26,7 +32,7 @@ const Pricing = () => {
         <div className="relative mx-auto w-[95%] sm:h-full sm:w-full max-w-lg rounded-lg border bg-white p-12 border-black/[0.08]">
           <div className="flex h-full flex-col px-6">
             <div className="uppercase text-center tracking-wider mb-1 text-base text-black/50">
-              Starter
+              {t("starter")}
             </div>
             <div className="flex flex-col text-center text-[4rem] font-extrabold leading-none tracking-tight lg:text-[4.5rem]">
               <span className="line-through text-[2.5rem] opacity-20">$39</span>
@@ -34,22 +40,26 @@ const Pricing = () => {
             </div>
             <ul className="flex-grow flex flex-col gap-3 pt-9 pb-10">
               <li className="text-black/70">
-                📸 <b>16</b> high-quality headshots
+                📸 <b>16</b>
+                {t("highQualityHeadshots")}
               </li>
               <li className="text-black/70">
-                ⏱️ <b>2</b>-hour processing time
+                ⏱️ <b>2</b>
+                {t("-hourProcessingTime")}
               </li>
               <li className="text-black/70">
-                👕 <b>Corporate</b> outfits and backgrounds
+                👕 <b>Multiple</b>
+                {t("outfitsAndBackgrounds")}
               </li>
               <li className="text-black/70">
-                🕺 <b>1</b> credit
+                🕺 <b>1</b>
+                {t("credit")}
               </li>
             </ul>
             <div className="flex justify-center">
               <Link href="/login">
                 <button className="flex w-[250px] justify-center items-center bg-blue-600 hover:bg-blue-500 font-medium text-white px-14 py-3 rounded-xl text-lg transition tracking-wider">
-                  Buy Starter
+                  {t("buyStarter")}
                 </button>
               </Link>
             </div>
@@ -61,12 +71,12 @@ const Pricing = () => {
           <div className="flex flex-col h-full w-full rounded-lg bg-white p-12">
             <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-blue-500 bg-white px-4 py-1 text-sm font-semibold shadow-md">
               <span className="text-gradient bg-gradient-to-l from-blue-600 to-blue-200 bg-clip-text text-transparent">
-                90% pick this plan
+                {t("90%pickThisPlan")}
               </span>
             </div>
             <div className="flex h-full flex-col">
               <div className="uppercase text-center tracking-wider mb-1 text-base text-black/50">
-                Basic
+                {t("basic")}
               </div>
               <div className="flex flex-col text-center text-[4rem] font-extrabold leading-none tracking-tight lg:text-[4.5rem]">
                 <span className="line-through text-[2.5rem] opacity-20">
@@ -78,22 +88,26 @@ const Pricing = () => {
               </div>
               <ul className="flex-grow flex flex-col gap-3 pt-9 pb-10">
                 <li className="text-black/70">
-                  📸 <b>48</b> high-quality headshots
+                  📸 <b>48</b>
+                  {t("highQualityHeadshots")}
                 </li>
                 <li className="text-black/70">
-                  ⏱️ <b>1</b>-hour processing time
+                  ⏱️ <b>1</b>
+                  {t("-hourProcessingTime")}
                 </li>
                 <li className="text-black/70">
-                  👕 <b>Corporate</b> outfits and backgrounds
+                  👕 <b>Multiple</b>
+                  {t("outfitsAndBackgrounds")}
                 </li>
                 <li className="text-black/70">
-                  🕺 <b>3</b> credits
+                  🕺 <b>3</b>
+                  {t("credit")}
                 </li>
               </ul>
               <div className="flex justify-center">
                 <Link href="/login">
                   <button className="flex w-[250px] justify-center items-center bg-gradient-to-l from-blue-600 to-blue-200  hover:from-blue-300 hover:to-blue-700 font-medium text-white px-14 py-3 rounded-xl text-lg transition tracking-wider">
-                    Buy Basic
+                    {t("buyBasic")}
                   </button>
                 </Link>
               </div>
@@ -104,11 +118,11 @@ const Pricing = () => {
         {/* Premium Plan */}
         <div className="relative mx-auto w-[95%] sm:h-full sm:w-full max-w-lg rounded-lg border bg-white p-12 border-black/[0.08]">
           <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border bg-white px-4 py-1 text-sm shadow-md font-semibold border-black/[0.08]">
-            <span className="text-slate-600">Best Value</span>
+            <span className="text-slate-600">{t("bestValue")}</span>
           </div>
           <div className="flex h-full flex-col">
             <div className="uppercase text-center tracking-wider mb-1 text-base text-black/50">
-              Premium
+              {t("premium")}
             </div>
             <div className="flex flex-col text-center text-[4rem] font-extrabold leading-none tracking-tight lg:text-[4.5rem]">
               <span className="line-through text-[2.5rem] opacity-20">$99</span>
@@ -116,22 +130,26 @@ const Pricing = () => {
             </div>
             <ul className="flex-grow flex flex-col gap-3 pt-9 pb-10">
               <li className="text-black/70">
-                📸 <b>80</b> high-quality headshots
+                📸 <b>80</b>
+                {t("highQualityHeadshots")}
               </li>
               <li className="text-black/70">
-                ⏱️ <b>30</b>-min processing time
+                ⏱️ <b>30</b>
+                {t("-minProcessingTime")}
               </li>
               <li className="text-black/70">
-                👕 <b>Corporate</b> outfits and backgrounds
+                👕 <b>Multiple</b>
+                {t("outfitsAndBackgrounds")}
               </li>
               <li className="text-black/70">
-                🕺 <b>5</b> credits
+                🕺 <b>5</b>
+                {t("credit")}
               </li>
             </ul>
             <div className="flex justify-center">
               <Link href="/login">
                 <button className="flex w-[250px] justify-center items-center bg-blue-600 hover:bg-blue-500 font-medium text-white px-14 py-3 rounded-xl text-lg transition tracking-wider">
-                  Buy Premium
+                  {t("buyPremium")}
                 </button>
               </Link>
             </div>

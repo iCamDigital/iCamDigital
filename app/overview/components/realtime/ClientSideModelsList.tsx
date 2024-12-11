@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import ModelsTable from "../../../../components/ModelsTable";
 import ClearModels from "../../../../components/ClearModels";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useTranslation } from "@/app/i18n/client";
 
 const packsIsEnabled = process.env.NEXT_PUBLIC_TUNE_TYPE === "packs";
 
@@ -21,6 +23,9 @@ type ClientSideModelsListProps = {
 export default function ClientSideModelsList({
   serverModels,
 }: ClientSideModelsListProps) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+
   const supabase = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
@@ -75,7 +80,7 @@ export default function ClientSideModelsList({
           }
         >
           <Button size="default" variant="default">
-            Train model
+            {t("trainModel")}
           </Button>
         </Link>
       </div>
@@ -88,9 +93,9 @@ export default function ClientSideModelsList({
             alt="No models"
             width={200}
             height={200}
-            className="mb-4 mt-20 [filter:brightness(0)_saturate(100%)_invert(37%)_sepia(98%)_saturate(1902%)_hue-rotate(217deg)_brightness(99%)_contrast(101%)]"
+            className="mb-4 mt-20 [filter:brightness(0)_saturate(100%)_invert(20%)_sepia(100%)_saturate(1000%)_hue-rotate(177deg)_brightness(100%)_contrast(70%)]"
           />
-          <p className="text-base text-gray-600">No models available.</p>
+          <p className="text-base text-gray-600">{t("noModelsAvailable.")}</p>
         </div>
       )}
     </div>

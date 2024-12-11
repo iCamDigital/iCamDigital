@@ -4,9 +4,9 @@ const Logo = () => {
   return (
     <div className="">
       <Image
-        src="/images/logo/logo-1.svg"
-        height={180}
-        width={180}
+        src="/images/logo/logo.png"
+        height={70}
+        width={70}
         alt="logo"
         loading="eager"
       />

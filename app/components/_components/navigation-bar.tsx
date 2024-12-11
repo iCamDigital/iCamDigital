@@ -1,11 +1,8 @@
 "use client";
 
 import * as React from "react";
-
 import Link from "next/link";
-
 import { cn } from "@/lib/utils";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -13,8 +10,13 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { useTranslation } from "../../i18n/client";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export function NavigationMenuBar() {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
+
   return (
     <NavigationMenu>
       <NavigationMenuList className="hidden md:flex md:space-x-4">
@@ -23,37 +25,34 @@ export function NavigationMenuBar() {
             <NavigationMenuLink
               className={`${navigationMenuTriggerStyle()} font-medium`}
             >
-              Home
+              {t("home")}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-
         <NavigationMenuItem>
           <Link href="/documentation/intro" legacyBehavior passHref>
             <NavigationMenuLink
               className={`${navigationMenuTriggerStyle()} font-medium`}
             >
-              Documentation
+              {t("documentation")}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-
         <NavigationMenuItem>
           <Link href="/#pricing" legacyBehavior passHref>
             <NavigationMenuLink
               className={`${navigationMenuTriggerStyle()} font-medium`}
             >
-              Pricing
+              {t("pricing")}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-
         <NavigationMenuItem>
-          <Link href="/refund" legacyBehavior passHref>
+          <Link href="/others/refund" legacyBehavior passHref>
             <NavigationMenuLink
               className={`${navigationMenuTriggerStyle()} font-medium`}
             >
-              Refunds
+              {t("refunds")}
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
@@ -61,29 +60,3 @@ export function NavigationMenuBar() {
     </NavigationMenu>
   );
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

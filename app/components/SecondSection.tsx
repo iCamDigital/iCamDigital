@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import Carousal from "@/components/Carousal";
+import { useLanguage } from "../contexts/LanguageContext";
+import { useTranslation } from "../i18n/client";
 
 const humans = [
   "/headshots/human1.png",
@@ -27,6 +29,8 @@ const humans2 = [
 ];
 
 const SecondSection = () => {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   return (
     <div>
       <div className="flex flex-col justify-center items-center">
@@ -42,14 +46,14 @@ const SecondSection = () => {
         </div>
         {/* Text element */}
         <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mt-2">
-          Upload your photos
+          {t("uploadYourPhotos")}
         </div>
         <div
           className="items-center justify-center flex text-lg md:text-xl font-md px-10 tracking-wider text-slate-700 mt-4 
         max-w-4xl text-center"
         >
-          Submit 4 or more high-quality selfies. Ensure they are front-facing,
-          with only one person, no hats or accessories.
+          {t("submit4OrMoreHighQualitySelfies.EnsureTheyAreFrontFacing,")}
+          {t("withOnlyOnePerson,NoHatsOrAccessories.")}
         </div>
         {/* Graphic element */}
         <div className="px-2 min-w-fit flex justify-center items-center mt-8">
@@ -196,10 +200,10 @@ const SecondSection = () => {
         </div>
         {/* Text element */}
         <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mt-2">
-          Our AI gets to work
+          {t("ourAiGetsToWork")}
         </div>
         <div className="items-center justify-center flex text-lg md:text-xl font-md px-10 tracking-wider text-slate-700 mt-4 max-w-4xl text-center">
-          The AI magic takes ~20 minutes. You'll get an email when it's ready.
+          {t("theAiMagicTakes20Minutes.YoullGetAnEmailWhenItsReady.")}
         </div>
         {/* Video element */}
         <div className="flex justify-center items-center mt-8">
@@ -228,18 +232,18 @@ const SecondSection = () => {
         </div>
         {/* Text element */}
         <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mt-10">
-          Get amazing headshots
+          {t("getAmazingHeadshots")}
         </div>
         <div className="items-center justify-center flex text-lg md:text-xl font-md px-10 tracking-wider text-slate-700 mt-4 max-w-4xl text-center">
-          You'll receive multiple AI headshots, ready for all use cases — from
-          personal to professional — depending on the style you choose.
+          {t("youllReceiveMultipleAiHeadshots,ReadyForAllUseCases-From")}
+          {t("personalToProfessional-DependingOnTheStyleYouChoose.")}
         </div>
         <div className="animate-fadeIn container mx-auto pt-10">
           <Carousal images={humans} />
           <Carousal images={humans2} reverse={true} />
         </div>
         <div className="items-center justify-center flex text-sm font-md px-10 pb-20 uppercase tracking-wider text-slate-400">
-          Results from framecast ai headshot generator.
+          {t("resultsFromFramecastAiHeadshotGenerator.")}
         </div>
       </div>
     </div>

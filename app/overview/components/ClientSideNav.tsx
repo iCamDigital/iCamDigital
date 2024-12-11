@@ -1,4 +1,3 @@
-// ClientSideNav.tsx
 "use client";
 
 import {
@@ -17,6 +16,8 @@ import Image from "next/image";
 import Link from "next/link";
 import ClientSideCredits from "./realtime/ClientSideCredits";
 import { Database } from "@/types/supabase";
+import { useLanguage } from "@/app/contexts/LanguageContext";
+import { useTranslation } from "@/app/i18n/client";
 
 interface ClientSideNavProps {
   isOpen: boolean;
@@ -29,44 +30,46 @@ export default function ClientSideNav({
   toggleSidebar,
   credits,
 }: ClientSideNavProps) {
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const path = usePathname();
 
   const MenuList = [
     {
-      section: "GENERAL",
+      section: <> {t("general")} </>,
       items: [
         {
-          name: "AI Headshots",
+          name: <> {t("aiHeadshots")} </>,
           icon: Sparkles,
           path: "/overview",
         },
         {
-          name: "AI Video Generation",
+          name: <> {t("aiVideoGeneration")} </>,
           icon: Video,
           path: "/overview/video",
         },
         {
-          name: "Image Editor",
+          name: <> {t("imageEditor")} </>,
           icon: FileImage,
           path: `/overview/editor`,
         },
       ],
     },
     {
-      section: "SUPPORT",
+      section: <> {t("support")} </>,
       items: [
         {
-          name: "Blog",
+          name: <> {t("blog")} </>,
           icon: Rss,
           path: "/overview/blog",
         },
         {
-          name: "Billing",
+          name: <> {t("billing")}</>,
           icon: WalletCards,
           path: "/overview/credits",
         },
         {
-          name: "Settings",
+          name: <> {t("settings")} </>,
           icon: Settings,
           path: "/overview/settings",
         },
@@ -108,13 +111,15 @@ export default function ClientSideNav({
   const renderSidebarContent = (isMobile?: boolean) => (
     <div className="flex flex-col h-full">
       {/* Logo section */}
-      <div className="flex justify-between items-center mb-8">
-        <Image
-          src="/images/logo/logo-1.svg"
-          alt="logo"
-          width={200}
-          height={200}
-        />
+      <div className="flex justify-center items-center">
+        <Link href="/">
+          <Image
+            src="/images/logo/logo.png"
+            alt="logo"
+            width={100}
+            height={100}
+          />
+        </Link>
         {isMobile && (
           <button
             onClick={toggleSidebar}
@@ -160,7 +165,7 @@ export default function ClientSideNav({
         <ClientSideCredits creditsRow={credits} />
         <hr className="my-3 border" />
         <p className="text-xs text-center text-gray-500">
-          © {new Date().getFullYear()} Framecast AI Inc.
+          © {new Date().getFullYear()} {t("ICamDigitalInc.")}
         </p>
       </div>
     </div>
